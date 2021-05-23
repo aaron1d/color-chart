@@ -10,13 +10,13 @@ from scipy.interpolate import CubicSpline
 from scipy.interpolate import interp1d
 
 
-file_nitride = 'nitride-Philipp.csv' # wl n
-file_oxide = 'oxide-Gao.csv' # wl n
-file_silicon = 'silicon-Vuye-20C.csv' # wl n k
+file_nitride = 'data/nitride-Philipp.csv' # wl n
+file_oxide = 'data/oxide-Gao.csv' # wl n
+file_silicon = 'data/silicon-Vuye-20C.csv' # wl n k
 
-file_fluorescent = 'standard-fluorescent-normalized-digitized.csv'
-file_ciexyz = 'ciexyzj-mod.csv'
-file_tristimulus = 'CIE1931_tristimulus_5nm_edit.csv'
+file_fluorescent = 'data/standard-fluorescent-normalized-digitized.csv'
+file_ciexyz = 'data/ciexyzj-mod.csv'
+file_tristimulus = 'data/CIE1931_tristimulus_5nm_edit.csv'
 
 
 nitride = np.genfromtxt(file_nitride, dtype=float, delimiter=',', skip_header=1)
