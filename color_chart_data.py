@@ -13,6 +13,7 @@ from scipy.interpolate import interp1d
 file_nitride = 'data/nitride-Philipp.csv' # wl n
 file_oxide = 'data/oxide-Gao.csv' # wl n
 file_silicon = 'data/silicon-Vuye-20C.csv' # wl n k
+file_HfO2 = 'HfO2_Al-Kuhaili.csv'
 
 file_fluorescent = 'data/standard-fluorescent-normalized-digitized.csv'
 file_ciexyz = 'data/ciexyzj-mod.csv'
@@ -29,9 +30,12 @@ silicon = np.genfromtxt(file_silicon, dtype=float, delimiter=',', skip_header=1)
 cssn = CubicSpline(silicon[:,0]*1000,silicon[:,1]) # n for wavelength in nm
 cssk = CubicSpline(silicon[:,0]*1000,silicon[:,2]) # k for wavelength in nm
 
+hafnia = np.genfromtxt(file_nitride, dtype=float, delimiter=',', skip_header=1)
+csh = CubicSpline(hafnia[:,0]*1000,hafnia[:,1]) # for wavelength in nm
+
 fluor = np.genfromtxt(file_fluorescent, dtype=float, delimiter=',')
 pfluor = interp1d(fluor[:,0],fluor[:,1])
-# csfluor = CubicSpline(fluor[:,0], fluor[:,1]) # normalized incident power
+csfluor = CubicSpline(fluor[:,0], fluor[:,1]) # normalized incident power
 
 # ciexyz = np.genfromtxt(file_ciexyz, dtype=float, delimiter=',')
 ciexyz = np.genfromtxt(file_tristimulus, dtype=float, delimiter = ',',skip_header=1)

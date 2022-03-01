@@ -13,7 +13,9 @@ import matplotlib.pyplot as plt
 from color_chart_funcs import refspec, refrgb
 
 #interpolation functions
-from color_chart_data import csn, cso, cssn, cssk, air, pfluor, csciex, csciey, csciez
+from color_chart_data import csn, cso, cssn, cssk, csh, air, pfluor, csciex, csciey, csciez
+
+
 
 lam_step = 1
 lam = np.arange(380,781,lam_step)
@@ -30,19 +32,24 @@ ciex = csciex(lam)
 ciey = csciey(lam)
 ciez = csciez(lam)
 
-nitride_thicknesses = np.arange(0,1001,2)
+dt = 1
+nitride_thicknesses = np.arange(0,200,dt)
 rgb_array = np.zeros((nitride_thicknesses.size,3))
 
 for i, d in enumerate(nitride_thicknesses):
     rgb_array[i,:] = refrgb(lam,p0,nair,np.pi/10,'mixed',nsi-1j*ksi,[nnit,d])
 
+plt.close()
 
 fig, ax = plt.subplots(figsize=(10,4))
 
-dif = lam_step
-yf = np.asarray([0, 0, 400, 400])
+yf = np.array([0, 0, 400, 400])
 for i, d in enumerate(nitride_thicknesses):
-    xf = np.asarray([d-dif,d+dif,d+dif,d-dif])
-    # xf = np.asarray([d,d+dif,d+dif,d])
-    # xf = np.asaarray([d-0.5, d+0.5, d+0.5, d-0.5])
+    xf = np.array([d-dt/2,d+dt/2,d+dt/2,d-dt/2])
     ax.fill(xf,yf,facecolor=rgb_array[i,:],edgecolor='none')
+
+ax.set_xticks(np.arange(0,201,20))
+ax.set_xlabel('Nitride Thickness (nm)')
+ax.set_yticks([])
+ax.set_yticklabels([])
+ax.grid(axis='x', color='w', linestyle='--', linewidth=0.5)
