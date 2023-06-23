@@ -30,7 +30,7 @@ ciex = csciex(lam)
 ciey = csciey(lam)
 ciez = csciez(lam)
 
-dt=2
+dt=1
 nitride_thicknesses = np.arange(0,221,dt)
 rgb_array1 = np.zeros((nitride_thicknesses.size,3))
 rgb_array2 = np.zeros((nitride_thicknesses.size,3))
@@ -42,16 +42,12 @@ for i, d in enumerate(nitride_thicknesses):
 
 
 fig, ax = plt.subplots(figsize=(10,4))
-# ax.grid(which='minor')
-# ax.vlines(20*np.array(range(11)),0,400,colors='white',linestyles='dashed')
 
 dif = lam_step
 yf1 = np.asarray([0, 0, 200, 200])
 yf2 = np.asarray([200, 200, 400, 400])
 for i, d in enumerate(nitride_thicknesses):
     xf = np.array([d-dt/2,d+dt/2,d+dt/2,d-dt/2])
-    # xf = np.asarray([d,d+dif,d+dif,d])
-    # xf = np.asaarray([d-0.5, d+0.5, d+0.5, d-0.5])
     ax.fill(xf,yf1,facecolor=rgb_array1[i,:],edgecolor='none')
     ax.fill(xf,yf2,facecolor=rgb_array2[i,:],edgecolor='none')
     
@@ -59,6 +55,6 @@ ax.set_xticks(np.arange(0,221,20))
 ax.set_xlabel('Nitride Thickness (nm)')
 ax.set_yticks([100,300])
 ax.set_yticklabels(['Air/SiN/Si','Air/SiN/Air'])
-ax.grid(axis='x', color='w', linestyle='--', linewidth=0.5)
+ax.grid(axis='x', color='w', linestyle=(0, (5.0, 40.0)), linewidth=0.5)
     
 # plt.savefig('sin_and_sin-on-si.png', dpi=600)

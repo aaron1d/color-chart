@@ -160,70 +160,70 @@ def refspec(lam,n0,alpha0,pol,ns,*ndpairs):
     # return the intensity reflectance
     return np.abs(ref)**2
 
-def compref(lam,n0,alpha0,pol,ns,*ndpairs):
-    '''
-    Calculates the complex reflection spectrum r(λ) given incident 
-    material (n0), incident angle, polarization, substrate material (ns)
-    and index-thickness pairs for layers of materials.
+# def compref(lam,n0,alpha0,pol,ns,*ndpairs):
+#     '''
+#     Calculates the complex reflection spectrum r(λ) given incident 
+#     material (n0), incident angle, polarization, substrate material (ns)
+#     and index-thickness pairs for layers of materials.
 
-    Parameters
-    ----------
-    lam : 1D numpy array of shape (nlam,) 
-        wavelength range in nanometers.
-    n0 : 1D numpy array of shape (nlam,)
-        refractive index of incident material at the values of lam
-    alpha0 : int or float
-        angle of incidence for incident layer, default normal incidence
-    pol : string
-        'TE', 'TM', or 'mixed' (50% each), otherwise normal incidence.
-    ns : 1D numpy array of shape (nlam,)
-        refractive index of substrate material at the values of lam
-    *ndpairs : variable number of 2 element lists of [1d numpy array,int/float ]
-       The RI n(λ) and thickness d (in nm) of each layer.
+#     Parameters
+#     ----------
+#     lam : 1D numpy array of shape (nlam,) 
+#         wavelength range in nanometers.
+#     n0 : 1D numpy array of shape (nlam,)
+#         refractive index of incident material at the values of lam
+#     alpha0 : int or float
+#         angle of incidence for incident layer, default normal incidence
+#     pol : string
+#         'TE', 'TM', or 'mixed' (50% each), otherwise normal incidence.
+#     ns : 1D numpy array of shape (nlam,)
+#         refractive index of substrate material at the values of lam
+#     *ndpairs : variable number of 2 element lists of [1d numpy array,int/float ]
+#        The RI n(λ) and thickness d (in nm) of each layer.
 
-    Returns
-    -------
-    1d numpy array of shape (nlam,)
-        Reflectance spectrum.
+#     Returns
+#     -------
+#     1d numpy array of shape (nlam,)
+#         Reflectance spectrum.
 
-    '''
+#     '''
     
-    # if mixed polarization, assume 50% TE, 50% TM
-    if pol=='mixed':
-        refspecTE = refspec(lam,n0,alpha0,'TE',ns,*ndpairs)
-        refspecTM = refspec(lam,n0,alpha0,'TM',ns,*ndpairs)
-        return (refspecTE + refspecTM)/2
+#     # if mixed polarization, assume 50% TE, 50% TM
+#     if pol=='mixed':
+#         refspecTE = refspec(lam,n0,alpha0,'TE',ns,*ndpairs)
+#         refspecTM = refspec(lam,n0,alpha0,'TM',ns,*ndpairs)
+#         return (refspecTE + refspecTM)/2
     
-    # for nx2x2 array, start with identity matrices
-    M = np.asarray([[[1,0],[0,1]] for i in range(lam.size)])
+#     # for nx2x2 array, start with identity matrices
+#     M = np.asarray([[[1,0],[0,1]] for i in range(lam.size)])
     
-    # gamma for incident material
-    gg0 = _gamma(n0,alpha0,pol)
+#     # gamma for incident material
+#     gg0 = _gamma(n0,alpha0,pol)
     
-    # incidence angle for substrate material
-    alphas = np.arcsin(n0/ns*np.sin(alpha0))
+#     # incidence angle for substrate material
+#     alphas = np.arcsin(n0/ns*np.sin(alpha0))
     
-    # gamma for substrate material
-    ggs = _gamma(ns,alphas,pol)
+#     # gamma for substrate material
+#     ggs = _gamma(ns,alphas,pol)
     
-    # calculate the nx2x2 array for each layer, multiply the 2x2's, for each layer
-    for nd in ndpairs:
-        nj = nd[0]
-        dj = nd[1]
+#     # calculate the nx2x2 array for each layer, multiply the 2x2's, for each layer
+#     for nd in ndpairs:
+#         nj = nd[0]
+#         dj = nd[1]
         
-        alphaj = np.arcsin(n0/nj*np.sin(alpha0))
-        mj = _mmj(lam,nj,dj,alphaj,pol)
+#         alphaj = np.arcsin(n0/nj*np.sin(alpha0))
+#         mj = _mmj(lam,nj,dj,alphaj,pol)
         
-        M = np.matmul(mj,M)
+#         M = np.matmul(mj,M)
         
-        mlist = list(M)
+#         mlist = list(M)
 
-    # calculate the (amplitude) reflection coeffecient given the total matrix
-    ref = [(g0*m[0,0]+gs*g0*m[0,1]-m[1,0]-gs*m[1,1])/(g0*m[0,0]+gs*g0*m[0,1]+m[1,0]+gs*m[1,1])\
-               for g0,gs,m in zip(gg0,ggs,mlist)]
+#     # calculate the (amplitude) reflection coeffecient given the total matrix
+#     ref = [(g0*m[0,0]+gs*g0*m[0,1]-m[1,0]-gs*m[1,1])/(g0*m[0,0]+gs*g0*m[0,1]+m[1,0]+gs*m[1,1])\
+#                for g0,gs,m in zip(gg0,ggs,mlist)]
     
-    # return the intensity reflectance
-    return ref
+#     # return the intensity reflectance
+#     return ref
 
 # display gamma correction
 def gammacor(x):
